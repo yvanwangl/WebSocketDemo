@@ -21,3 +21,26 @@ wss.on('connection', (ws)=>{
         });
     });
 });
+
+
+//client side
+let count = 0;
+let ws = new WebScoket('ws://localhost:3000/test');
+
+ws.on('open', ()=>{
+    console.log(`[CLIENT] open()`);
+    ws.send('hello!');
+});
+
+ws.on('message', (msg)=>{
+    console.log(`[CLIENT] receive: ${msg}`);
+    count++;
+    if(count>3){
+        ws.send('goodbye!');
+        ws.close();
+    }else {
+        setTimeout(()=>{
+            ws.send(`Hello, i am No.${count}`);
+        }, 1000);
+    }
+});
